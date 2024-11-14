@@ -16,7 +16,12 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
+from UserProfile.views import UserProfileView
+from Post.views import PostView , AddCommentView
 
 urlpatterns = [
     path('admin/', admin.site.urls),
+    path('api/profiles/' , UserProfileView.as_view()),
+    path('api/posts/' , PostView.as_view()),
+    path('api/addcomment/' , AddCommentView.as_view()),
 ]
