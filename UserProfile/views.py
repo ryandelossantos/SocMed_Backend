@@ -15,9 +15,9 @@ class UserProfileView(APIView):
         return Response({'ok': True, 'data': serializer.data} , status=200)
     
     def post(self , request , format=None):
-        data = JSONParser().parse(request)
+        # data = JSONParser().parse(request)
 
-        serializer = UserProfileSerializer(data=data)
+        serializer = UserProfileSerializer(data=request.data)
         if serializer.is_valid():
             serializer.save()
             return Response({'ok': True , 'data': serializer.data}, status=200)
@@ -25,7 +25,7 @@ class UserProfileView(APIView):
         return Response({'ok': False , 'message': 'something went wrong!'})
     
     def patch(self , request , format=None):
-        req_data = JSONParser().parse(request)
+        # req_data = JSONParser().parse(request)
 
         object_instance = UserProfile.objects.get(id=req_data['id'])
         print(object_instance)
