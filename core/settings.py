@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/5.1/ref/settings/
 """
 
 from pathlib import Path
+from datetime import timedelta
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -39,6 +40,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'rest_framework',
     'corsheaders',
+    'rest_framework_simplejwt',
     'UserProfile',
     'Post',
     'Friend',
@@ -55,12 +57,32 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        'rest_framework_simplejwt.authentication.JWTAuthentication',
+    )
+}
+
+SIMPLE_JWT = {
+    "ACCESS_TOKEN_LIFETIME": timedelta(days=1),
+    "REFRESH_TOKEN_LIFETIME": timedelta(days=1),
+    "ROTATE_REFRESH_TOKENS": False,
+    "BLACKLIST_AFTER_ROTATION": False,
+    "UPDATE_LAST_LOGIN": False,
+
+    "TOKEN_OBTAIN_SERIALIZER": "core.serializer.MyTokenObtainPairSerializer",
+}
 
 CORS_ALLOWED_ORIGINS = [
-    "https://localhost",
-    "https://sub.example.com",
-    "http://localhost:8080",
-    "http://127.0.0.1:9000",
+    "http://localhost:5173",
+    "https://localhost:5173",
+    "http://172.17.1.64:5173",
+    "https://172.17.1.64:5173",
+    "https://192.168.1.144:5173",
+    "http://192.168.1.144:5173",
+    "https://192.168.1.144:5173",
+    "https://192.168.100.40:5173",
+    "http://192.168.100.40:5173",
 ]
 
 ROOT_URLCONF = 'core.urls'
