@@ -1,30 +1,30 @@
 from rest_framework import serializers
-from UserProfile.models import UserProfile
 from .models import Post, Comment, Like
+from django.contrib.auth.models import User
 
-class UserProfileSerializer(serializers.ModelSerializer):
+class UserSerializer(serializers.ModelSerializer):
     class Meta:
-        model = UserProfile
-        fields = ['id', 'username', 'email', 'display_name', 'avatar', 'bio']
+        model = User
+        fields = ['id', 'username', 'email']
 
 class PostSerializer(serializers.ModelSerializer):
-    user = UserProfileSerializer(read_only=True)
-    comments_count = serializers.IntegerField(source='comments.count', read_only=True)
-    likes_count = serializers.IntegerField(source='likes.count', read_only=True)
+    user = UserSerializer(read_only=True)
+    comments_count = serializers.IntegerField(read_only=True)
+    likes_count = serializers.IntegerField(read_only=True)
 
     class Meta:
         model = Post
-        fields = ['id', 'user', 'content', 'created_at', 'updated_at', 'image', 'comments_count', 'likes_count']
+        fields = ['id', 'user', 'content', 'media', 'created_at', 'updated_at', 'comments_count', 'likes_count']
 
 class CommentSerializer(serializers.ModelSerializer):
-    user = UserProfileSerializer(read_only=True)
+    user = UserSerializer(read_only=True)
 
     class Meta:
         model = Comment
-        fields = ['id', 'user', 'content', 'created_at']
+        fields = ['id', 'user', 'content', 'created_at', 'updated_at']
 
 class LikeSerializer(serializers.ModelSerializer):
-    user = UserProfileSerializer(read_only=True)
+    user = UserSerializer(read_only=True)
 
     class Meta:
         model = Like

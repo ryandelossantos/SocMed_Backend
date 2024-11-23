@@ -8,7 +8,10 @@ from django.urls import path
 from UserProfile.views import UserProfileView
 from Post.views import PostView , AddCommentView
 from .views import UserView
+from django.conf import settings
+from django.conf.urls.static import static
 
+urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('api/auth/login', TokenObtainPairView.as_view(), name='token_obtain_pair'),
