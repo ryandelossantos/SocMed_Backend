@@ -1,6 +1,6 @@
 from rest_framework.views import APIView
 from rest_framework.response import Response
-
+from UserProfile.models import UserProfile
 from django.contrib.auth.models import User
 from .serializer import UserSerializer
 
@@ -18,7 +18,6 @@ class UserView(APIView):
             user = User.objects.get(username=request.data['username'])
             user.set_password(request.data['password'])
             user.save()
-
 
             return Response({'ok': True , 'data' : serializer.data} , status=200)
         return Response({'ok': False , 'errors': serializer.errors},status=400)

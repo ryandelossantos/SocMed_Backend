@@ -2,7 +2,7 @@ from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 # from rest_framework_simplejwt.views import TokenObtainPairView
 from rest_framework import serializers
 from django.contrib.auth.models import User
-
+from UserProfile.models import UserProfile
 class MyTokenObtainPairSerializer(TokenObtainPairSerializer):
     @classmethod
     def get_token(cls, user):
@@ -15,6 +15,10 @@ class MyTokenObtainPairSerializer(TokenObtainPairSerializer):
 
         return token
 
+class UserProfileSerializer(serializers.ModelSerializer): 
+    class Meta: 
+        model = UserProfile 
+        fields = ['avatar']
 
 class UserSerializer(serializers.ModelSerializer):
     password_confirmation = serializers.CharField(write_only=True)

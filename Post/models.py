@@ -6,7 +6,7 @@ class Post(models.Model):
     content = models.TextField()
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
-    media = models.FileField(upload_to='posts/% Y/% m/% d', null=True, blank=True)
+    media = models.FileField(upload_to='posts/', null=True, blank=True)
 
     def __str__(self):
         return f"Post by {self.user.username} on {self.created_at}"
