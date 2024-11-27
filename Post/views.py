@@ -2,9 +2,9 @@ from rest_framework import viewsets, status
 from rest_framework.response import Response
 from django.db.models import Count
 from .models import Post, Comment, Like
-from .serializers import PostSerializer, CommentSerializer, LikeSerializer
+from .serializer import PostSerializer, CommentSerializer, LikeSerializer
 from rest_framework.decorators import action
-from rest_framework.permissions import IsAuthenticated, IsOwnerOrReadOnly
+from rest_framework.permissions import IsAuthenticated, IsAuthenticatedOrReadOnly
 from rest_framework.exceptions import PermissionDenied
 
 class PostViewSet(viewsets.ModelViewSet):
@@ -17,7 +17,7 @@ class PostViewSet(viewsets.ModelViewSet):
 
     def get_permissions(self):
         if self.action == 'update' or self.action == 'partial_update':
-            return [IsOwnerOrReadOnly()]
+            return [IsAuthenticatedOrReadOnly()]
         return super().get_permissions()
 
     def perform_create(self, serializer):
@@ -54,7 +54,9 @@ class CommentViewSet(viewsets.ModelViewSet):
     permission_classes = [IsAuthenticated]
 
     def perform_create(self, serializer):
-        serializer.save(user=self.request.user)
+        post_id = self.kwargs.get('postId')
+        post = Post.objects.get(id=post_id)
+        serializer.save(user=self.request.user, post=post)
 
 class LikeViewSet(viewsets.ModelViewSet):
     queryset = Like.objects.all()
@@ -62,4 +64,6 @@ class LikeViewSet(viewsets.ModelViewSet):
     permission_classes = [IsAuthenticated]
 
     def perform_create(self, serializer):
-        serializer.save(user=self.request.user)
+        post_id = self.kwargs.get('postId')
+        post = Post.objects.get(id=post_id)
+        serializer.save(user=self.request.user, post=post)
